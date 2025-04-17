@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Stunting</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h2>Kalkulator Stunting</h2>
+    <form method="POST">
+        <label>Nama:</label><br>
+        <input type="text" name="name" required><br>
+
+        <label>Usia (bulan):</label><br>
+        <input type="number" name="age" required><br>
+
+        <label>Tinggi Badan (cm):</label><br>
+        <input type="number" name="height" required><br>
+
+        <label>Berat Badan (kg):</label><br>
+        <input type="number" name="weight" required><br>
+
+        <label>Jenis Kelamin:</label><br>
+        <select name="gender">
+            <option value="L">Laki-laki</option>
+            <option value="P">Perempuan</option>
+        </select><br><br>
+
+        <input type="submit" value="Hitung">
+    </form>
+
+    {% if status %}
+        <h3>{{ status }}</h3>
+    {% endif %}
+
+    {% if logs %}
+        <h4>Riwayat Perhitungan:</h4>
+        <ul>
+            {% for log in logs.values() %}
+                <li>{{ log['name'] }} ({{ log['age_months'] }} bulan) - Tinggi: {{ log['height'] }} cm, Berat: {{ log['weight'] }} kg → {{ log['status'] }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <!-- Tombol untuk Reset Riwayat -->
+    <form method="POST" action="{{ url_for('reset_history') }}">
+        <input type="submit" value="Reset Riwayat" class="reset"/>
+    </form>
+</body>
+</html>
