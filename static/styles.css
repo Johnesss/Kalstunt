@@ -67,12 +67,10 @@ ul li {
 input[type="submit"].reset {
     background-color: red;
     color: white;
-    width: auto;
+    width: 100%;
     margin: 20px auto;
     display: block;
     border: none;
-    padding: 10px 345px;
-    border-radius: 5px;
 }
 
 input[type="submit"].reset:hover {
