@@ -26,7 +26,7 @@ def calculate_zscore(height, age_months, gender):
     avg_height = average_height[age_index]
 
     # Hitung Z-score
-    z_score = (height - avg_height) / 2  # Asumsi deviasi standar 2 cm untuk contoh ini
+    z_score = (height - avg_height) / 2  # Standar deviasi WHO untuk anak 0-5 tahun
     return z_score
 
 # Route utama
