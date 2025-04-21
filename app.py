@@ -13,13 +13,12 @@ firebase_admin.initialize_app(cred, {
 
 # Fungsi untuk menghitung Z-score
 def calculate_zscore(height, age_months, gender):
-    # Data WHO (misal dari CSV atau JSON yang berisi referensi tinggi badan)
     if gender == 'L':
-        # Data tinggi badan laki-laki untuk usia 0-5 tahun (contoh data, harusnya dari WHO)
-        average_height = [50, 55, 60, 65, 70, 75]
+        # Data tinggi badan laki-laki untuk usia 0-5 tahun (contoh data)
+        average_height = [61, 71.7, 81.5, 89, 95.8, 102]
     else:
-        # Data tinggi badan perempuan untuk usia 0-5 tahun (contoh data, harusnya dari WHO)
-        average_height = [50, 54, 59, 64, 69, 74]
+        # Data tinggi badan perempuan untuk usia 0-5 tahun (contoh data)
+        average_height = [59, 69.8, 79.2, 87.8, 95, 101.1]
 
     # Menentukan usia berdasarkan bulan dan mengambil referensi tinggi badan
     age_index = min(age_months - 1, len(average_height) - 1)
