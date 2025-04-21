@@ -1,30 +1,63 @@
-@app.route("/", methods=["GET", "POST"])
-def index():
-    status = None
-    z_score = None
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Stunting</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h2>Kalkulator Stunting</h2>
 
-    if request.method == "POST":
-        name = request.form["name"]
-        age = int(request.form["age"])
-        height = float(request.form["height"])
-        gender = request.form["gender"]
+    <!-- Peringatan -->
+    <div style="background-color: #fff3cd; color: #856404; padding: 10px; margin: 10px auto; width: 50%; border: 1px solid #ffeeba; border-radius: 5px; text-align: center;">
+        <strong>Catatan:</strong> Kalkulator ini hanya untuk anak usia 0–5 tahun (0–60 bulan)
+    </div>
 
-        # Hitung Z-score berdasarkan usia dan jenis kelamin
-        z_score = hitung_z_score(age, height, gender)
-        status = interpretasi_z_score(z_score)
+    <!-- Form Input -->
+    <form method="POST">
+        <label>Nama:</label><br>
+        <input type="text" name="name" required><br>
 
-        # Simpan riwayat
-        log_data = {
-            'name': name,
-            'age_months': age,
-            'height': height,
-            'gender': gender,  # ⬅ penting
-            'z_score': z_score,
-            'status': status
-        }
+        <label>Usia (bulan):</label><br>
+        <input type="number" name="age" min="0" max="60" required><br>
 
-        logs = session.get('logs', {})
-        logs[str(len(logs))] = log_data
-        session['logs'] = logs
+        <label>Tinggi Badan (cm):</label><br>
+        <input type="number" name="height" step="0.1" required><br>
 
-    return render_template("index.html", status=status, z_score=z_score, logs=session.get('logs'))
+        <label>Jenis Kelamin:</label><br>
+        <select name="gender">
+            <option value="L">Laki-laki</option>
+            <option value="P">Perempuan</option>
+        </select><br><br>
+
+        <input type="submit" value="Hitung">
+    </form>
+
+    <!-- Hasil -->
+    {% if status %}
+        <h3>{{ status }}</h3>
+        <h4>Z-score: {{ z_score|round(2) }}</h4> <!-- Menampilkan Z-score -->
+    {% endif %}
+
+    <!-- Riwayat -->
+    {% if logs %}
+        <h4>Riwayat Perhitungan:</h4>
+        <ul>
+            {% for log in logs.values() %}
+                <li>
+                    {{ log['name'] }} ({{ log['age_months'] }} bulan, 
+                    {{ 'Laki-laki' if log['gender'] == 'L' else 'Perempuan' }}) 
+                    - Tinggi: {{ log['height'] }} cm → {{ log['status'] }} | 
+                    Z-score: {{ log['z_score']|round(2) }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <!-- Tombol Reset -->
+    <form method="POST" action="{{ url_for('reset_history') }}">
+        <input type="submit" value="Reset Riwayat" class="reset"/>
+    </form>
+</body>
+</html>
