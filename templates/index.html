@@ -8,18 +8,22 @@
 </head>
 <body>
     <h2>Kalkulator Stunting</h2>
+
+    <!-- Peringatan -->
+    <div style="background-color: #fff3cd; color: #856404; padding: 10px; margin: 10px auto; width: 50%; border: 1px solid #ffeeba; border-radius: 5px; text-align: center;">
+        <strong>Catatan:</strong> Kalkulator ini hanya untuk anak usia 0–5 tahun (0–60 bulan)
+    </div>
+
+    <!-- Form Input -->
     <form method="POST">
         <label>Nama:</label><br>
         <input type="text" name="name" required><br>
 
         <label>Usia (bulan):</label><br>
-        <input type="number" name="age" required><br>
+        <input type="number" name="age" min="0" max="60" required><br>
 
         <label>Tinggi Badan (cm):</label><br>
-        <input type="number" name="height" required><br>
-
-        <label>Berat Badan (kg):</label><br>
-        <input type="number" name="weight" required><br>
+        <input type="number" name="height" step="0.1" required><br>
 
         <label>Jenis Kelamin:</label><br>
         <select name="gender">
@@ -30,20 +34,23 @@
         <input type="submit" value="Hitung">
     </form>
 
+    <!-- Hasil -->
     {% if status %}
         <h3>{{ status }}</h3>
+        <h4>Z-score: {{ z_score|round(2) }}</h4>  <!-- Menampilkan Z-score -->
     {% endif %}
 
+    <!-- Riwayat -->
     {% if logs %}
         <h4>Riwayat Perhitungan:</h4>
         <ul>
             {% for log in logs.values() %}
-                <li>{{ log['name'] }} ({{ log['age_months'] }} bulan) - Tinggi: {{ log['height'] }} cm, Berat: {{ log['weight'] }} kg → {{ log['status'] }}</li>
+                <li>{{ log['name'] }} ({{ log['age_months'] }} bulan) - Tinggi: {{ log['height'] }} cm → {{ log['status'] }} | Z-score: {{ log['z_score']|round(2) }}</li>
             {% endfor %}
         </ul>
     {% endif %}
 
-    <!-- Tombol untuk Reset Riwayat -->
+    <!-- Tombol Reset -->
     <form method="POST" action="{{ url_for('reset_history') }}">
         <input type="submit" value="Reset Riwayat" class="reset"/>
     </form>
