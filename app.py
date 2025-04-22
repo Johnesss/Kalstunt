@@ -15,7 +15,7 @@ def calculate_zscore(height, age_months, gender):
     else:
         average_height = [59, 69.8, 79.2, 87.8, 95, 101.1]
 
-    age_index = min(age_months - 1, len(average_height) - 1)
+    age_index = min(age_months // 12, len(average_height) - 1)
     avg_height = average_height[age_index]
 
     z_score = (height - avg_height) / 2
